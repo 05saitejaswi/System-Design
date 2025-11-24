@@ -1,0 +1,85 @@
+1757. Recyclable and Low Fat Products
+
+# Write your MySQL query statement below
+SELECT product_id
+FROM products
+WHERE low_fats='Y' AND recyclable='Y'
+
+584. Find Customer Referee
+# Write your MySQL query statement below
+SELECT name
+FROM Customer
+WHERE referee_id!=2 OR referee_id IS NULL
+
+595. Big Countries
+# Write your MySQL query statement below
+SELECT name,population,area
+FROM World
+WHERE area>=3000000 OR population >= 25000000
+
+1148. Article Views I
+# Write your MySQL query statement below
+SELECT DISTINCT author_id AS id
+FROM Views
+WHERE author_id= viewer_id
+ORDER BY author_id ASC
+
+1683. Invalid Tweets
+SELECT tweet_id
+FROM Tweets
+WHERE LENGTH(content) >15.
+
+Basic joins
+1378. Replace Employee ID With The Unique Identifier
+
+SELECT EmployeeUNI.unique_id,Employees.name
+FROM Employees
+LEFT JOIN EmployeeUNI ON Employees.id= EmployeeUNI.id
+
+1068. Product Sales Analysis I
+SELECT Product.product_name,Sales.year,Sales.price
+FROM Sales
+LEFT JOIN Product ON Sales.product_id=Product.product_id
+
+1581. Customer Who Visited but Did Not Make Any Transactions
+# Write your MySQL query statement below
+SELECT 
+    Visits.customer_id,
+    COUNT(Visits.visit_id) AS count_no_trans
+FROM Visits
+LEFT JOIN Transactions
+    ON Visits.visit_id = Transactions.visit_id
+WHERE Transactions.visit_id IS NULL
+GROUP BY Visits.customer_id;
+
+
+197. Rising Temperature
+SELECT t2.id
+FROM Weather t1
+JOIN Weather t2
+  ON t2.recordDate = DATE_ADD(t1.recordDate, INTERVAL 1 DAY)
+WHERE t2.temperature > t1.temperature;
+
+1661. Average Time of Process per Machine
+SELECT 
+    machine_id,
+    ROUND(AVG(end_ts - start_ts), 3) AS processing_time
+FROM (
+    SELECT
+        machine_id,
+        process_id,
+        MIN(CASE WHEN activity_type = 'start' THEN timestamp END) AS start_ts,
+        MIN(CASE WHEN activity_type = 'end' THEN timestamp END) AS end_ts
+    FROM Activity
+    GROUP BY machine_id, process_id
+) AS x
+GROUP BY machine_id;
+
+577. Employee Bonus
+SELECT e.name, b.bonus
+FROM Employee e
+LEFT JOIN Bonus b
+    ON e.empId = b.empId
+WHERE b.bonus < 1000 OR b.bonus IS NULL;
+
+
