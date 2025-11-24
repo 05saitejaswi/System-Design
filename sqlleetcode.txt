@@ -1,0 +1,363 @@
+1. Basic SELECT Statements
+
+Syntax:
+
+SELECT column1, column2
+FROM table_name;
+
+
+Explanation:
+
+Retrieves data from one or more columns in a table.
+
+You can select all columns using *.
+
+Tricks/Patterns:
+
+Always know what table you are querying.
+
+Alias columns with AS for readability:
+
+SELECT first_name AS Name, salary AS Salary
+FROM employees;
+
+
+Use DISTINCT to remove duplicates:
+
+SELECT DISTINCT department FROM employees;
+
+2. Filtering with WHERE, AND/OR, IN, BETWEEN, LIKE
+
+Syntax:
+
+SELECT *
+FROM employees
+WHERE salary > 50000
+  AND department IN ('IT', 'HR')
+  OR hire_date BETWEEN '2023-01-01' AND '2023-12-31';
+
+
+Explanation:
+
+WHERE filters rows.
+
+Logical operators: AND, OR, NOT.
+
+IN checks multiple values.
+
+BETWEEN checks a range.
+
+LIKE searches patterns (% = any chars, _ = single char).
+
+Tricks:
+
+Use parentheses to avoid logical mistakes:
+
+WHERE (salary > 50000 AND department='IT') OR department='HR'
+
+
+LIKE 'A%' → starts with A, '_%' → contains any single char.
+
+3. ORDER BY, LIMIT
+
+Syntax:
+
+SELECT name, salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 5;
+
+
+Explanation:
+
+ORDER BY sorts data (ASC ascending, DESC descending).
+
+LIMIT restricts rows returned.
+
+Tricks:
+
+For top N problems, combine ORDER BY + LIMIT.
+
+To get the second highest salary:
+
+SELECT DISTINCT salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+
+4. Aggregations: COUNT, SUM, AVG, MIN, MAX
+
+Syntax:
+
+SELECT COUNT(*), SUM(salary), AVG(salary), MIN(salary), MAX(salary)
+FROM employees;
+
+
+Explanation:
+
+Use aggregation functions to summarize data.
+
+Tricks:
+
+Use COUNT(column_name) to count only non-null values.
+
+Combine with GROUP BY to get summaries per group.
+
+5. GROUP BY and HAVING
+
+Syntax:
+
+SELECT department, AVG(salary)
+FROM employees
+GROUP BY department
+HAVING AVG(salary) > 50000;
+
+
+Explanation:
+
+GROUP BY → aggregate data by a column.
+
+HAVING → filter aggregated results (like WHERE for groups).
+
+Tricks:
+
+Always filter before grouping using WHERE if needed.
+
+Use HAVING only for aggregated values.
+
+6. Joins: INNER, LEFT, RIGHT, FULL, CROSS
+
+Syntax Examples:
+
+-- INNER JOIN: only matching rows
+SELECT a.name, b.salary
+FROM employees a
+INNER JOIN salaries b ON a.id = b.emp_id;
+
+-- LEFT JOIN: all from left, matching from right
+SELECT a.name, b.salary
+FROM employees a
+LEFT JOIN salaries b ON a.id = b.emp_id;
+
+-- RIGHT JOIN: all from right, matching from left
+SELECT a.name, b.salary
+FROM employees a
+RIGHT JOIN salaries b ON a.id = b.emp_id;
+
+-- FULL OUTER JOIN: all from both
+SELECT a.name, b.salary
+FROM employees a
+FULL OUTER JOIN salaries b ON a.id = b.emp_id;
+
+-- CROSS JOIN: Cartesian product
+SELECT a.name, b.salary
+FROM employees a
+CROSS JOIN salaries b;
+
+
+Tricks:
+
+Use INNER JOIN when you only want matches.
+
+LEFT JOIN → find missing data in the right table (NULL check).
+
+For SQL 50 patterns: missing purchases, missing orders → LEFT JOIN + IS NULL.
+
+7. Subqueries
+
+Syntax:
+
+SELECT name
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+
+
+Explanation:
+
+Query inside a query.
+
+Can return scalar, list, or table.
+
+Tricks:
+
+Use IN for list subqueries.
+
+Correlated subqueries reference outer query:
+
+SELECT e1.name
+FROM employees e1
+WHERE salary > (SELECT AVG(salary) 
+                FROM employees e2
+                WHERE e1.department = e2.department);
+
+8. INSERT, UPDATE, DELETE
+
+Syntax:
+
+-- Insert
+INSERT INTO employees (name, salary)
+VALUES ('John', 50000);
+
+-- Update
+UPDATE employees
+SET salary = salary * 1.1
+WHERE department = 'IT';
+
+-- Delete
+DELETE FROM employees
+WHERE id = 10;
+
+
+Tricks:
+
+Always test WHERE conditions in SELECT before UPDATE/DELETE.
+
+Use transactions (BEGIN/COMMIT) in practice.
+
+9. Table Creation and Constraints
+
+Syntax:
+
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    department VARCHAR(50),
+    salary DECIMAL(10,2),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES employees(id)
+);
+
+
+Explanation:
+
+PRIMARY KEY → unique identifier
+
+FOREIGN KEY → references another table
+
+UNIQUE → prevents duplicates
+
+Tricks:
+
+Always define constraints for consistency.
+
+For interview SQL 50: foreign keys → help in joins.
+
+10. String and Date Functions
+
+Examples:
+
+-- String
+SELECT CONCAT(first_name, ' ', last_name) AS full_name
+FROM employees;
+
+SELECT LENGTH(name) FROM employees;
+SELECT UPPER(name), LOWER(name) FROM employees;
+
+-- Date
+SELECT CURRENT_DATE, NOW();
+SELECT DATE_ADD(hire_date, INTERVAL 1 YEAR) FROM employees;
+SELECT DATEDIFF(NOW(), hire_date) FROM employees;
+
+
+Tricks:
+
+String + date functions solve most SQL 50 “formatting” or “calculation” questions.
+
+Pattern: find differences, calculate age, extract year/month/day, concatenate columns.
+
+General Tricks for Solving SQL Problems
+
+Read the question carefully: identify table and column requirements.
+
+Start with SELECT *: first see what the raw data looks like.
+
+Solve incrementally: filter → join → aggregate → order.
+
+Use aliases for tables and columns for readability.
+
+Think in terms of sets, not loops. SQL is set-based.
+
+Draw a diagram if multiple joins are involved.
+
+Test subqueries separately before combining.
+
+Check NULLs — many errors come from unexpected NULLs.
+
+
+
+SQL Visual Cheat Sheet (SQL 50 Focused)
+1. Basic SELECT
+Syntax	Example	Tip
+SELECT column1, column2 FROM table;	SELECT name, salary FROM employees;	Use * to select all columns.
+SELECT DISTINCT column	SELECT DISTINCT department FROM employees;	Remove duplicates easily.
+Alias	SELECT first_name AS Name	Makes output readable.
+2. Filtering (WHERE, AND, OR, IN, BETWEEN, LIKE)
+Syntax	Example	Tip
+WHERE condition	SELECT * FROM employees WHERE salary > 50000;	Always filter before aggregating.
+AND/OR	WHERE department='IT' AND salary>50000	Use parentheses to avoid logical mistakes.
+IN	WHERE department IN ('IT','HR')	Shorter than multiple ORs.
+BETWEEN	WHERE salary BETWEEN 40000 AND 60000	Inclusive range.
+LIKE	WHERE name LIKE 'A%'	% = any string, _ = single char
+3. Sorting & Limiting
+Syntax	Example	Tip
+`ORDER BY column ASC	DESC`	SELECT name FROM employees ORDER BY salary DESC;
+LIMIT n	SELECT * FROM employees LIMIT 5;	Combine with ORDER BY for top N queries.
+4. Aggregation
+Function	Example	Tip
+COUNT(*)	SELECT COUNT(*) FROM employees;	Counts rows including NULLs.
+SUM(column)	SELECT SUM(salary) FROM employees;	Total of a numeric column.
+AVG(column)	SELECT AVG(salary) FROM employees;	Average value.
+MIN/MAX(column)	SELECT MIN(salary), MAX(salary) FROM employees;	Find extremes.
+GROUP BY	SELECT department, AVG(salary) FROM employees GROUP BY department;	Aggregate per group.
+HAVING	HAVING AVG(salary)>50000	Filter aggregated results.
+5. Joins
+Type	Syntax	Example	Tip
+INNER JOIN	... INNER JOIN ... ON ...	Only matching rows	Most common in SQL 50.
+LEFT JOIN	... LEFT JOIN ... ON ...	All left + matching right	Use to find missing data.
+RIGHT JOIN	... RIGHT JOIN ... ON ...	All right + matching left	Less common.
+FULL JOIN	... FULL OUTER JOIN ...	All from both	Rare, but useful.
+CROSS JOIN	... CROSS JOIN ...	Cartesian product	Use for combinations.
+6. Subqueries
+Type	Example	Tip
+Scalar	WHERE salary > (SELECT AVG(salary) FROM employees)	Returns single value.
+IN	WHERE id IN (SELECT emp_id FROM orders)	Returns list of values.
+Correlated	WHERE salary > (SELECT AVG(salary) FROM employees e2 WHERE e2.department = e1.department)	Reference outer query.
+7. Data Manipulation (DML)
+Command	Example	Tip
+INSERT	INSERT INTO employees(name, salary) VALUES('John',50000);	Insert single/multiple rows.
+UPDATE	UPDATE employees SET salary=salary*1.1 WHERE department='IT';	Always test WHERE first!
+DELETE	DELETE FROM employees WHERE id=10;	Always test with SELECT first!
+8. Table Creation & Constraints (DDL)
+Command	Example	Tip
+CREATE TABLE	CREATE TABLE employees(id INT PRIMARY KEY, name VARCHAR(50), dept VARCHAR(50));	Define schema upfront.
+PRIMARY KEY	id INT PRIMARY KEY	Unique identifier.
+FOREIGN KEY	FOREIGN KEY(manager_id) REFERENCES employees(id)	Used in joins.
+UNIQUE	email VARCHAR(50) UNIQUE	Prevent duplicates.
+9. String & Date Functions
+Function	Example	Tip
+CONCAT	SELECT CONCAT(first_name,' ',last_name) AS fullname	Combine strings.
+LENGTH	SELECT LENGTH(name)	Count string length.
+UPPER/LOWER	SELECT UPPER(name)	Case conversion.
+CURRENT_DATE / NOW	SELECT CURRENT_DATE, NOW();	Date retrieval.
+DATE_ADD / DATE_SUB	SELECT DATE_ADD(hire_date, INTERVAL 1 YEAR)	Add/subtract dates.
+DATEDIFF	SELECT DATEDIFF(NOW(), hire_date)	Difference between dates.
+10. Quick Patterns for SQL 50
+Problem Type	Pattern
+Top N salaries	ORDER BY salary DESC LIMIT n
+Missing data	LEFT JOIN ... WHERE right_table.col IS NULL
+Aggregation per group	GROUP BY + HAVING
+Find duplicates	GROUP BY column HAVING COUNT(*)>1
+Correlated comparison	Subquery referencing outer table
+String/date formatting	CONCAT, SUBSTRING, DATE functions
+
+💡 Pro Tips for SQL Interviews / SQL 50:
+
+Start with SELECT * to understand data.
+
+Solve incrementally: filter → join → aggregate → order.
+
+Use table aliases (t1, t2) for multiple joins.
+
+Test subqueries separately.
+
+Watch out for NULLs in joins and aggregates.
