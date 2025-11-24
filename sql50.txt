@@ -1,0 +1,144 @@
+✅ 1. SELECT Queries — Syntax
+Basic SELECT
+SELECT column1, column2
+FROM table_name;
+
+SELECT with WHERE
+SELECT *
+FROM table_name
+WHERE condition;
+
+Filtering
+WHERE column = value
+WHERE column != value
+WHERE column > value
+WHERE column LIKE '%text%'
+WHERE column IS NULL
+WHERE column IS NOT NULL
+
+Sorting
+ORDER BY column ASC;
+ORDER BY column DESC;
+
+✅ 2. JOINS — Syntax
+INNER JOIN
+SELECT a.col, b.col
+FROM TableA a
+JOIN TableB b
+ON a.key = b.key;
+
+LEFT JOIN
+SELECT a.col, b.col
+FROM TableA a
+LEFT JOIN TableB b
+ON a.key = b.key;
+
+RIGHT JOIN
+SELECT a.col, b.col
+FROM TableA a
+RIGHT JOIN TableB b
+ON a.key = b.key;
+
+FULL JOIN
+SELECT a.col, b.col
+FROM TableA a
+FULL JOIN TableB b
+ON a.key = b.key;
+
+SELF JOIN
+SELECT a.col, b.col
+FROM Table a
+JOIN Table b
+ON a.key = b.key;
+
+✅ 3. GROUP BY — Syntax
+Group & aggregate
+SELECT col, COUNT(*), SUM(col2), AVG(col3)
+FROM table
+GROUP BY col;
+
+GROUP BY with HAVING
+SELECT col, COUNT(*)
+FROM table
+GROUP BY col
+HAVING COUNT(*) > 1;
+
+✅ 4. Subqueries — Syntax
+Subquery in WHERE
+SELECT *
+FROM table
+WHERE column IN (
+    SELECT column FROM table2 WHERE condition
+);
+
+Subquery in FROM
+SELECT t.col, t.col2
+FROM (
+    SELECT * FROM table WHERE condition
+) AS t;
+
+✅ 5. Window Functions — Syntax
+ROW_NUMBER
+SELECT col,
+       ROW_NUMBER() OVER (PARTITION BY group_col ORDER BY sort_col) AS rn
+FROM table;
+
+RANK / DENSE_RANK
+RANK() OVER (ORDER BY col)
+DENSE_RANK() OVER (ORDER BY col)
+
+SUM / AVG over window
+SUM(col) OVER (PARTITION BY group_col)
+
+✅ 6. UNION / INTERSECT — Syntax
+UNION
+SELECT col FROM table1
+UNION
+SELECT col FROM table2;
+
+UNION ALL
+SELECT col FROM table1
+UNION ALL
+SELECT col FROM table2;
+
+INTERSECT
+SELECT col FROM table1
+INTERSECT
+SELECT col FROM table2;
+
+✅ 7. JOIN + GROUP BY (very common in SQL50)
+SELECT p.col, COUNT(*)
+FROM TableA a
+JOIN TableB b
+ON a.id = b.id
+GROUP BY p.col;
+
+✅ 8. DELETE / UPDATE — Syntax
+DELETE
+DELETE FROM table
+WHERE condition;
+
+UPDATE
+UPDATE table
+SET column = value
+WHERE condition;
+
+🎯 This covers ALL 50 SQL problems YOU will see:
+
+Select
+
+Where
+
+Basic Joins
+
+Subqueries
+
+Aggregations
+
+Group By
+
+Having
+
+Window Functions
+
+Union / Set operations
