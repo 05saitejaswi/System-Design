@@ -1,0 +1,155 @@
+python:
+✅ DAY 1 — Python Basics & Arrays Foundation
+1️⃣ Python Syntax Overview
+Print
+print("Hello, Python!")
+
+Comments
+# This is a comment
+
+2️⃣ Variables & Data Types
+
+Python detects the type automatically.
+
+x = 10              # int
+pi = 3.14           # float
+name = "Harry"      # str
+flag = True         # bool
+arr = [1, 2, 3]     # list
+
+
+Check type:
+
+type(x)
+
+3️⃣ if / else
+x = 5
+
+if x > 10:
+    print("Greater")
+elif x == 5:
+    print("Equal")
+else:
+    print("Smaller")
+
+4️⃣ for & while loops
+for loop
+for i in range(5):
+    print(i)
+
+while loop
+i = 0
+while i < 5:
+    print(i)
+    i += 1
+
+5️⃣ List (Array) Creation
+nums = [1, 2, 3, 4]
+empty = []
+mix = [1, "hello", 3.5]
+
+6️⃣ List Slicing
+a = [10, 20, 30, 40, 50]
+
+a[1:4]   # [20, 30, 40]
+a[:3]    # [10, 20, 30]
+a[3:]    # [40, 50]
+a[::-1]  # reverse list
+
+7️⃣ enumerate()
+
+Used when you need index + value.
+
+nums = [10, 20, 30]
+
+for i, val in enumerate(nums):
+    print(i, val)
+
+8️⃣ range()
+range(5)        # 0 to 4
+range(2, 8)     # 2 to 7
+range(1, 10, 2) # odd numbers
+
+9️⃣ List Comprehension
+
+A faster & cleaner way to generate lists.
+
+squares = [x*x for x in range(5)]   # [0,1,4,9,16]
+evens = [x for x in range(10) if x % 2 == 0]
+
+🧠 Practice Problems (Day 1 Required)
+
+Top Interview 150 — MUST SOLVE
+
+🔥 1. Remove Element
+Problem
+
+Remove all occurrences of val from array in-place.
+
+Solution
+def removeElement(nums, val):
+    k = 0
+    for n in nums:
+        if n != val:
+            nums[k] = n
+            k += 1
+    return k
+
+🔥 2. Best Time to Buy and Sell Stock
+
+Find max profit with 1 transaction.
+
+Solution
+def maxProfit(prices):
+    min_price = float('inf')
+    max_profit = 0
+
+    for p in prices:
+        min_price = min(min_price, p)
+        max_profit = max(max_profit, p - min_price)
+
+    return max_profit
+
+🔥 3. Majority Element
+
+Find element appearing more than n/2 times
+(Boyer-Moore Algorithm)
+
+Solution
+def majorityElement(nums):
+    count = 0
+    candidate = None
+
+    for n in nums:
+        if count == 0:
+            candidate = n
+        count += 1 if n == candidate else -1
+
+    return candidate
+
+🔥 4. Remove Duplicates from Sorted Array
+
+Keep unique values in-place.
+
+Solution
+def removeDuplicates(nums):
+    if not nums:
+        return 0
+    k = 1
+
+    for i in range(1, len(nums)):
+        if nums[i] != nums[i-1]:
+            nums[k] = nums[i]
+            k += 1
+    return k
+
+🎯 Day 1 Summary
+
+✔ Syntax basics
+✔ Variables, types
+✔ if/else
+✔ loops
+✔ list creation & slicing
+✔ enumerate(), range()
+✔ list comprehension
+✔ 4 essential LeetCode array problems
